@@ -269,14 +269,17 @@
     const ShopPage = ({ products, onAddToCart, onViewProduct }) => (
       <div className="min-h-screen">
         <div className="text-center pt-16 md:pt-24 pb-8 md:pb-12 animate-slide-up px-4">
-          <img src="/images/logo.png" alt="VALUES" className="h-10 md:h-12 w-auto object-contain mx-auto opacity-90 mb-6 md:mb-8" />
-          <img src="/images/loading.gif" alt="VALUES Collection" className="w-40 h-40 md:w-56 md:h-56 object-contain mx-auto opacity-80 mb-4" />
+          <img src="/images/loading.gif" alt="VALUES Collection" className="w-40 h-40 md:w-56 md:h-56 object-contain mx-auto opacity-80 mb-6 md:mb-8" />
+          <img src="/images/logo.png" alt="VALUES" className="h-10 md:h-12 w-auto object-contain mx-auto opacity-90 mb-4" />
           <p className="text-gray-500 text-xs md:text-sm font-normal tracking-wide"></p>
         </div>
-        <div className="max-w-6xl mx-auto px-4 md:px-8 pb-32">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 pb-12">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 lg:gap-12">
             {products.map((product) => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onViewDetails={onViewProduct} />)}
           </div>
+        </div>
+        <div className="text-center pb-32 px-4">
+          <img src="/images/loading.gif" alt="VALUES" className="w-32 h-32 md:w-48 md:h-48 object-contain mx-auto opacity-60" />
         </div>
       </div>
     );
@@ -319,8 +322,178 @@
       </div>
     );
 
+    const CheckoutModal = ({ total, onClose, onConfirm }) => {
+      const [phone, setPhone] = useState('+7');
+      const [fullName, setFullName] = useState('');
+      const [deliveryType, setDeliveryType] = useState('cdek');
+      const [address, setAddress] = useState('');
+      const [city, setCity] = useState('');
+      const [index, setIndex] = useState('');
+
+      const handlePhoneChange = (e) => {
+        let value = e.target.value;
+        if (!value.startsWith('+7')) {
+          value = '+7' + value.replace(/\D/g, '');
+        } else {
+          value = '+7' + value.slice(2).replace(/\D/g, '');
+        }
+        if (value.length <= 12) setPhone(value);
+      };
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-xl animate-scale-in overflow-y-auto">
+          <div className="glass-effect rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto my-8">
+            <div className="p-6 md:p-8">
+              <div className="flex justify-between items-start mb-6">
+                <h2 className="text-2xl md:text-3xl font-normal tracking-tight text-black" style={{letterSpacing: '-0.02em'}}>Оформление заказа</h2>
+                <button onClick={onClose} className="text-gray-400 hover:text-black transition-all hover:rotate-90 duration-300 text-xl">✕</button>
+              </div>
+
+              <div className="space-y-5">
+                <div>
+                  <label className="text-gray-600 text-xs mb-2 block tracking-wide">НОМЕР ТЕЛЕФОНА</label>
+                  <input 
+                    type="tel" 
+                    value={phone} 
+                    onChange={handlePhoneChange}
+                    placeholder="+7 999 999 99 99"
+                    className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-gray-600 text-xs mb-2 block tracking-wide">ФИО</label>
+                  <input 
+                    type="text" 
+                    value={fullName} 
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Иванов Иван Иванович"
+                    className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-gray-600 text-xs mb-3 block tracking-wide">СПОСОБ ДОСТАВКИ</label>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setDeliveryType('cdek')}
+                      className={`flex-1 py-3 px-4 rounded-lg text-sm font-normal transition-all ${deliveryType === 'cdek' ? 'bg-black text-white' : 'bg-gray-50 text-black hover:bg-gray-100'}`}
+                      style={{border: '0.5px solid rgba(0,0,0,0.04)'}}
+                    >
+                      СДЭК
+                    </button>
+                    <button
+                      onClick={() => setDeliveryType('pochta')}
+                      className={`flex-1 py-3 px-4 rounded-lg text-sm font-normal transition-all ${deliveryType === 'pochta' ? 'bg-black text-white' : 'bg-gray-50 text-black hover:bg-gray-100'}`}
+                      style={{border: '0.5px solid rgba(0,0,0,0.04)'}}
+                    >
+                      Почта России
+                    </button>
+                  </div>
+                </div>
+
+                {deliveryType === 'cdek' && (
+                  <div className="space-y-4 animate-slide-up">
+                    <div>
+                      <label className="text-gray-600 text-xs mb-2 block tracking-wide">ГОРОД</label>
+                      <input 
+                        type="text" 
+                        value={city} 
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="Москва"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-gray-600 text-xs mb-2 block tracking-wide">АДРЕС ПУНКТА ВЫДАЧИ СДЭК</label>
+                      <input 
+                        type="text" 
+                        value={address} 
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="ул. Пушкина, д. 10"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {deliveryType === 'pochta' && (
+                  <div className="space-y-4 animate-slide-up">
+                    <div>
+                      <label className="text-gray-600 text-xs mb-2 block tracking-wide">ГОРОД</label>
+                      <input 
+                        type="text" 
+                        value={city} 
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="Санкт-Петербург"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-gray-600 text-xs mb-2 block tracking-wide">АДРЕС ОТДЕЛЕНИЯ</label>
+                      <input 
+                        type="text" 
+                        value={address} 
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="ул. Ленина, д. 5"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-gray-600 text-xs mb-2 block tracking-wide">ПОЧТОВЫЙ ИНДЕКС</label>
+                      <input 
+                        type="text" 
+                        value={index} 
+                        onChange={(e) => setIndex(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        placeholder="123456"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black text-sm focus:outline-none focus:border-gray-400 transition-colors"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-gray-600 text-sm">Итого к оплате</span>
+                    <span className="text-black text-2xl font-normal">{(total / 100).toLocaleString('ru-RU')} ₽</span>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      if (phone.length >= 12 && fullName && city && address && (deliveryType === 'cdek' || index.length === 6)) {
+                        onConfirm({ phone, fullName, deliveryType, city, address, index });
+                        onClose();
+                      } else {
+                        alert('Пожалуйста, заполните все поля');
+                      }
+                    }}
+                    className="w-full bg-black text-white py-3.5 rounded-xl text-base font-medium apple-button"
+                  >
+                    Оплатить
+                  </button>
+                  <p className="text-gray-400 text-xs text-center mt-3">Безопасная оплата через Stripe</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
     const CartPage = ({ cart, onRemoveItem, onUpdateQuantity, onCheckout }) => {
+      const [showCheckout, setShowCheckout] = useState(false);
       const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      const handleCheckout = () => {
+        if (cart.length > 0) {
+          setShowCheckout(true);
+        }
+      };
+
+      const handleConfirmOrder = (orderData) => {
+        console.log('Заказ оформлен:', orderData);
+        alert('Заказ успешно оформлен! Скоро с вами свяжется менеджер.');
+      };
+
       return (
         <div className="min-h-screen px-4 md:px-8">
           <div className="max-w-5xl mx-auto pt-16 md:pt-24 pb-32">
@@ -338,10 +511,11 @@
                 <div className="lg:col-span-2 space-y-3">
                   {cart.map((item) => <CartItem key={item.cartId} item={item} onRemove={onRemoveItem} onUpdateQuantity={onUpdateQuantity} />)}
                 </div>
-                <div><CartSummary total={total} onCheckout={onCheckout} /></div>
+                <div><CartSummary total={total} onCheckout={handleCheckout} /></div>
               </div>
             )}
           </div>
+          {showCheckout && <CheckoutModal total={total} onClose={() => setShowCheckout(false)} onConfirm={handleConfirmOrder} />}
         </div>
       );
     };
@@ -459,7 +633,6 @@
 
       const user = { id: '12345', name: 'Values User', username: 'values_user' };
       const handleAddToCart = (product, color, size = 'M') => { addToCart(product, color, size); };
-      const handleCheckout = () => { alert('Функция оформления заказа скоро появится!'); };
 
       return (
         <>
@@ -467,7 +640,7 @@
           <div className="min-h-screen bg-white text-black">
             <main className="pb-28 md:pb-32">
               {currentPage === 'shop' && <ShopPage products={products} onAddToCart={handleAddToCart} onViewProduct={setSelectedProduct} />}
-              {currentPage === 'cart' && <CartPage cart={cart} onRemoveItem={removeFromCart} onUpdateQuantity={updateQuantity} onCheckout={handleCheckout} />}
+              {currentPage === 'cart' && <CartPage cart={cart} onRemoveItem={removeFromCart} onUpdateQuantity={updateQuantity} />}
               {currentPage === 'profile' && <ProfilePage user={user} />}
               {selectedProduct && <ProductDetail product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={handleAddToCart} />}
               <NavigationBar currentPage={currentPage} setCurrentPage={setCurrentPage} cartCount={getCartCount()} />
