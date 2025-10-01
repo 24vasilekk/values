@@ -33,4 +33,6 @@ yarn-error.log*
 .railway/
 
 # OS
-Thumbs.db
+Thumbs.dbpackage.json
+package-lock.json
+node_modules/
