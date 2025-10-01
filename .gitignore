@@ -11,6 +11,9 @@ dist/
 # Misc
 .DS_Store
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Environment
 .env
@@ -19,14 +22,15 @@ dist/
 .env.test.local
 .env.production.local
 
-# Lock files
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-# Railway
-.railway/
+# Lock files (удалите эту строку, чтобы package-lock.json попал в репозиторий)
+# package-lock.json
 
 # IDE
 .vscode/
 .idea/
+
+# Railway
+.railway/
+
+# OS
+Thumbs.db
