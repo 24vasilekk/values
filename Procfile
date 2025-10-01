@@ -1,1 +1,1 @@
-web: python server.py
+web: caddy run --config Caddyfile --adapter caddyfile
