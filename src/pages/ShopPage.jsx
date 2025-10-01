@@ -4,14 +4,15 @@ import ProductCard from '../components/product/ProductCard';
 const ShopPage = ({ products, onAddToCart, onViewProduct }) => {
   return (
     <div className="min-h-screen">
-      {/* Hero секция с логотипом */}
+      {/* Hero секция с логотипом PNG */}
       <div className="text-center py-12 md:py-20 animate-slide-up px-4">
-        <h1 
-          className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter text-black mb-4"
-          style={{ fontFamily: 'acne-studios, system-ui, -apple-system' }}
-        >
-          VALUES
-        </h1>
+        <div className="flex justify-center items-center mb-4">
+          <img
+            src="/images/logo.png"
+            alt="VALUES Logo"
+            className="h-24 md:h-32 lg:h-40 w-auto object-contain"
+          />
+        </div>
         <div className="w-16 md:w-24 h-px bg-gray-300 mx-auto" />
       </div>
 

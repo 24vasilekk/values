@@ -24,8 +24,20 @@
       to { transform: scale(1); opacity: 1; }
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
     .animate-slide-up { animation: slideUp 0.5s ease-out; }
     .animate-scale-in { animation: scaleIn 0.3s ease-out; }
+    .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+    .animate-fade-out { animation: fadeOut 0.5s ease-out; }
 
     .glass-effect {
       background: rgba(255, 255, 255, 0.8);
@@ -51,13 +63,24 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.25); }
+
+    /* Загрузочный экран */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, createContext, useContext } = React;
+    const { useState, useEffect, createContext, useContext } = React;
 
     // ===== DATA =====
     const products = [
@@ -70,16 +93,16 @@
         sizes: ['S', 'M', 'L', 'XL'],
         images: {
           black: [
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
+            '/images/products/black-hoodie-1.jpg',
+            '/images/products/black-hoodie-2.jpg',
+            '/images/products/black-hoodie-3.jpg',
+            '/images/products/black-hoodie-4.jpg',
           ],
           brown: [
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
+            '/images/products/brown-hoodie-1.jpg',
+            '/images/products/brown-hoodie-2.jpg',
+            '/images/products/brown-hoodie-3.jpg',
+            '/images/products/brown-hoodie-4.jpg',
           ]
         },
         description: 'Премиальное оверсайз худи из 100% органического хлопка. Минималистичный дизайн с вышивкой VALUES. Идеальный вес для круглогодичной носки.',
@@ -102,16 +125,16 @@
         sizes: ['S', 'M', 'L', 'XL'],
         images: {
           brown: [
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
-            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800',
+            '/images/products/brown-hoodie-1.jpg',
+            '/images/products/brown-hoodie-2.jpg',
+            '/images/products/brown-hoodie-3.jpg',
+            '/images/products/brown-hoodie-4.jpg',
           ],
           black: [
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
-            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800',
+            '/images/products/black-hoodie-1.jpg',
+            '/images/products/black-hoodie-2.jpg',
+            '/images/products/black-hoodie-3.jpg',
+            '/images/products/black-hoodie-4.jpg',
           ]
         },
         description: 'Премиальное оверсайз худи в насыщенном коричневом оттенке. Изготовлено из плотного хлопкового материала с мягкой внутренней отделкой. Современная уличная мода.',
@@ -172,6 +195,26 @@
         <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, getCartTotal, getCartCount }}>
           {children}
         </CartContext.Provider>
+      );
+    };
+
+    // ===== LOADING SCREEN COMPONENT =====
+    const LoadingScreen = ({ isVisible }) => {
+      if (!isVisible) return null;
+
+      return (
+        <div className="loading-screen animate-fade-in">
+          <div className="text-center">
+            <img
+              src="/images/loading.gif"
+              alt="Загрузка..."
+              className="w-64 h-64 md:w-96 md:h-96 object-contain mx-auto"
+            />
+            <p className="text-black text-lg md:text-xl font-light tracking-wider mt-8 animate-pulse">
+              VALUES
+            </p>
+          </div>
+        </div>
       );
     };
 
@@ -290,9 +333,13 @@
     const ShopPage = ({ products, onAddToCart, onViewProduct }) => (
       <div className="min-h-screen">
         <div className="text-center py-12 md:py-20 animate-slide-up px-4">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter text-black mb-4">
-            VALUES
-          </h1>
+          <div className="flex justify-center items-center mb-4">
+            <img
+              src="/images/logo.png"
+              alt="VALUES Logo"
+              className="h-24 md:h-32 lg:h-40 w-auto object-contain"
+            />
+          </div>
           <div className="w-16 md:w-24 h-px bg-gray-300 mx-auto" />
         </div>
 
@@ -439,11 +486,19 @@
             <div className="p-3 md:p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
               <p className="text-gray-600 text-xs md:text-sm mb-2">Реферальная программа</p>
               <p className="text-black text-sm md:text-lg mb-3">
-                Приглашайте друзей и получайте <span className="font-semibold">100 бонусов</span> за каждого!
+                Приглашайте друзей, которые сделают покупку, и получайте <span className="font-semibold">10% с каждой их покупки!</span>
               </p>
               <div className="flex flex-col sm:flex-row gap-2">
                 <input type="text" value={`https://values.store/ref/${user.id}`} readOnly className="flex-1 bg-white border border-gray-200 rounded-lg px-3 md:px-4 py-2 text-black text-xs md:text-sm" />
-                <button className="bg-black text-white px-4 md:px-6 py-2 rounded-lg text-xs md:text-sm font-medium hover:bg-gray-800 transition-all whitespace-nowrap">Копировать</button>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(`https://values.store/ref/${user.id}`);
+                    alert('Ссылка скопирована!');
+                  }}
+                  className="bg-black text-white px-4 md:px-6 py-2 rounded-lg text-xs md:text-sm font-medium hover:bg-gray-800 transition-all whitespace-nowrap"
+                >
+                  Копировать
+                </button>
               </div>
             </div>
           </GlassCard>
@@ -545,7 +600,15 @@
     const App = () => {
       const [currentPage, setCurrentPage] = useState('shop');
       const [selectedProduct, setSelectedProduct] = useState(null);
+      const [isLoading, setIsLoading] = useState(true);
       const { cart, addToCart, removeFromCart, updateQuantity, getCartCount } = useCart();
+
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          setIsLoading(false);
+        }, 5000);
+        return () => clearTimeout(timer);
+      }, []);
 
       const user = { id: '12345', name: 'Values User', username: 'values_user' };
 
@@ -560,27 +623,31 @@
       };
 
       return (
-        <div className="min-h-screen bg-white text-black">
-          <main className="pb-24 md:pb-32">
-            {currentPage === 'shop' && (
-              <ShopPage products={products} onAddToCart={handleAddToCart} onViewProduct={setSelectedProduct} />
-            )}
+        <>
+          <LoadingScreen isVisible={isLoading} />
+          
+          <div className="min-h-screen bg-white text-black">
+            <main className="pb-24 md:pb-32">
+              {currentPage === 'shop' && (
+                <ShopPage products={products} onAddToCart={handleAddToCart} onViewProduct={setSelectedProduct} />
+              )}
 
-            {currentPage === 'cart' && (
-              <CartPage cart={cart} onRemoveItem={removeFromCart} onUpdateQuantity={updateQuantity} onCheckout={handleCheckout} />
-            )}
+              {currentPage === 'cart' && (
+                <CartPage cart={cart} onRemoveItem={removeFromCart} onUpdateQuantity={updateQuantity} onCheckout={handleCheckout} />
+              )}
 
-            {currentPage === 'profile' && (
-              <ProfilePage user={user} />
-            )}
+              {currentPage === 'profile' && (
+                <ProfilePage user={user} />
+              )}
 
-            {selectedProduct && (
-              <ProductDetail product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={handleAddToCart} />
-            )}
+              {selectedProduct && (
+                <ProductDetail product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={handleAddToCart} />
+              )}
 
-            <NavigationBar currentPage={currentPage} setCurrentPage={setCurrentPage} cartCount={getCartCount()} />
-          </main>
-        </div>
+              <NavigationBar currentPage={currentPage} setCurrentPage={setCurrentPage} cartCount={getCartCount()} />
+            </main>
+          </div>
+        </>
       );
     };
 

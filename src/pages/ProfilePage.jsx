@@ -43,11 +43,11 @@ const ProfilePage = ({ user, orders, bonuses }) => {
             </span>
           </div>
 
-          {/* Реферальная ссылка */}
+          {/* Реферальная программа - ОБНОВЛЕННЫЙ ТЕКСТ */}
           <div className="p-3 md:p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
             <p className="text-gray-600 text-xs md:text-sm mb-2">Реферальная программа</p>
             <p className="text-black text-sm md:text-lg mb-3">
-              Приглашайте друзей и получайте <span className="font-semibold">100 бонусов</span> за каждого!
+              Приглашайте друзей, которые сделают покупку, и получайте <span className="font-semibold">10% с каждой их покупки!</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-2">
               <input
@@ -56,7 +56,13 @@ const ProfilePage = ({ user, orders, bonuses }) => {
                 readOnly
                 className="flex-1 bg-white border border-gray-200 rounded-lg px-3 md:px-4 py-2 text-black text-xs md:text-sm"
               />
-              <button className="bg-black text-white px-4 md:px-6 py-2 rounded-lg text-xs md:text-sm font-medium hover:bg-gray-800 transition-all whitespace-nowrap">
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(`https://values.store/ref/${user?.id || '12345'}`);
+                  alert('Ссылка скопирована!');
+                }}
+                className="bg-black text-white px-4 md:px-6 py-2 rounded-lg text-xs md:text-sm font-medium hover:bg-gray-800 transition-all whitespace-nowrap"
+              >
                 Копировать
               </button>
             </div>

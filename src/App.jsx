@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './components/layout/Layout';
 import NavigationBar from './components/layout/NavigationBar';
+import LoadingScreen from './components/ui/LoadingScreen';
 import ShopPage from './pages/ShopPage';
 import CartPage from './pages/CartPage';
 import ProfilePage from './pages/ProfilePage';
@@ -13,6 +14,7 @@ import './styles/animations.css';
 const AppContent = () => {
   const [currentPage, setCurrentPage] = useState('shop');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   const {
     cart,
@@ -21,6 +23,15 @@ const AppContent = () => {
     updateQuantity,
     getCartCount,
   } = useCart();
+
+  // Загрузочный экран на 5 секунд
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const user = {
     id: '12345',
@@ -38,46 +49,50 @@ const AppContent = () => {
   };
 
   return (
-    <Layout>
-      {currentPage === 'shop' && (
-        <ShopPage
-          products={products}
-          onAddToCart={handleAddToCart}
-          onViewProduct={setSelectedProduct}
-        />
-      )}
+    <>
+      <LoadingScreen isVisible={isLoading} />
+      
+      <Layout>
+        {currentPage === 'shop' && (
+          <ShopPage
+            products={products}
+            onAddToCart={handleAddToCart}
+            onViewProduct={setSelectedProduct}
+          />
+        )}
 
-      {currentPage === 'cart' && (
-        <CartPage
-          cart={cart}
-          onRemoveItem={removeFromCart}
-          onUpdateQuantity={updateQuantity}
-          onCheckout={handleCheckout}
-        />
-      )}
+        {currentPage === 'cart' && (
+          <CartPage
+            cart={cart}
+            onRemoveItem={removeFromCart}
+            onUpdateQuantity={updateQuantity}
+            onCheckout={handleCheckout}
+          />
+        )}
 
-      {currentPage === 'profile' && (
-        <ProfilePage
-          user={user}
-          orders={[]}
-          bonuses={250}
-        />
-      )}
+        {currentPage === 'profile' && (
+          <ProfilePage
+            user={user}
+            orders={[]}
+            bonuses={250}
+          />
+        )}
 
-      {selectedProduct && (
-        <ProductDetail
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-          onAddToCart={handleAddToCart}
-        />
-      )}
+        {selectedProduct && (
+          <ProductDetail
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+            onAddToCart={handleAddToCart}
+          />
+        )}
 
-      <NavigationBar
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        cartCount={getCartCount()}
-      />
-    </Layout>
+        <NavigationBar
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          cartCount={getCartCount()}
+        />
+      </Layout>
+    </>
   );
 };
 
