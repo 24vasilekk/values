@@ -15,13 +15,13 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
         <div className="p-8">
           {/* Заголовок и кнопка закрытия */}
           <div className="flex justify-between items-start mb-8">
-            <h2 className="text-3xl md:text-4xl font-light tracking-wider text-white">
+            <h2 className="text-3xl md:text-4xl font-light tracking-wider text-black">
               {product.name}
             </h2>
             <button
               onClick={onClose}
-              className="text-white/60 hover:text-white transition-colors hover:rotate-90 duration-300"
-              aria-label="Close"
+              className="text-gray-600 hover:text-black transition-colors hover:rotate-90 duration-300"
+              aria-label="Закрыть"
             >
               <X className="w-8 h-8" />
             </button>
@@ -38,19 +38,19 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
             {/* Информация о товаре */}
             <div className="flex flex-col justify-between">
               <div>
-                <p className="text-white/60 text-sm mb-4 tracking-wide uppercase">
-                  Premium Collection
+                <p className="text-gray-600 text-sm mb-4 tracking-wide uppercase">
+                  Премиум коллекция
                 </p>
                 
-                <p className="text-white/80 leading-relaxed mb-8">
+                <p className="text-black leading-relaxed mb-8">
                   {product.description}
                 </p>
 
                 {/* Детали товара */}
-                <ul className="text-white/60 text-sm space-y-2 mb-8">
+                <ul className="text-gray-600 text-sm space-y-2 mb-8">
                   {product.details.map((detail, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <span className="w-1 h-1 bg-white/40 rounded-full" />
+                      <span className="w-1 h-1 bg-gray-400 rounded-full" />
                       {detail}
                     </li>
                   ))}
@@ -65,8 +65,8 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
 
                 {/* Выбор размера */}
                 <div className="mb-8">
-                  <p className="text-white/60 text-sm mb-3 tracking-wide uppercase">
-                    Select Size
+                  <p className="text-gray-600 text-sm mb-3 tracking-wide uppercase">
+                    Выберите размер
                   </p>
                   <div className="flex gap-3">
                     {product.sizes.map((size) => (
@@ -75,8 +75,8 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
                         onClick={() => setSelectedSize(size)}
                         className={`px-6 py-3 rounded-xl border-2 transition-all ${
                           selectedSize === size
-                            ? 'border-white bg-white text-black'
-                            : 'border-white/30 text-white hover:border-white/60'
+                            ? 'border-black bg-black text-white'
+                            : 'border-gray-300 text-black hover:border-gray-500'
                         }`}
                       >
                         {size}
@@ -86,7 +86,7 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
                 </div>
 
                 {/* Цена */}
-                <p className="text-3xl md:text-4xl font-light text-white mb-8">
+                <p className="text-3xl md:text-4xl font-light text-black mb-8">
                   {(product.price / 100).toLocaleString('ru-RU')} ₽
                 </p>
               </div>
@@ -97,9 +97,9 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
                   onAddToCart(product, selectedColor, selectedSize);
                   onClose();
                 }}
-                className="w-full bg-white text-black py-4 rounded-2xl text-lg font-medium hover:bg-white/90 transition-all hover:scale-[1.02] active:scale-95"
+                className="w-full bg-black text-white py-4 rounded-2xl text-lg font-medium hover:bg-gray-800 transition-all hover:scale-[1.02] active:scale-95"
               >
-                Add to Cart
+                Добавить в корзину
               </button>
             </div>
           </div>

@@ -49,7 +49,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
                   ? 'border-black scale-110 shadow-lg' 
                   : 'border-gray-300 hover:border-gray-500'
               }`}
-              aria-label={`Color: ${color}`}
+              aria-label={`Цвет: ${color}`}
             />
           ))}
         </div>
@@ -62,7 +62,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
           }}
           className="bg-black text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-medium hover:bg-gray-800 transition-all hover:scale-105 active:scale-95"
         >
-          Add to Cart
+          В корзину
         </button>
       </div>
     </div>

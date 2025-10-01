@@ -17,7 +17,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
           {item.name}
         </h3>
         <p className="text-gray-600 text-xs md:text-sm mb-2">
-          Color: {item.selectedColor === 'black' ? 'Black' : 'Brown'} • Size: {item.size}
+          Цвет: {item.selectedColor === 'black' ? 'Черный' : 'Коричневый'} • Размер: {item.size}
         </p>
         
         {/* Количество */}
@@ -53,7 +53,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
         <button
           onClick={() => onRemove(item.cartId)}
           className="text-gray-400 hover:text-black transition-colors"
-          aria-label="Remove item"
+          aria-label="Удалить товар"
         >
           <X className="w-4 h-4 md:w-5 md:h-5" />
         </button>

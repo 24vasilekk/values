@@ -3,9 +3,9 @@ import { ShoppingBag, Home, ShoppingCart } from 'lucide-react';
 
 const NavigationBar = ({ currentPage, setCurrentPage, cartCount }) => {
   const navItems = [
-    { id: 'shop', icon: ShoppingBag, label: 'Shop' },
-    { id: 'cart', icon: ShoppingCart, label: 'Cart', badge: cartCount },
-    { id: 'profile', icon: Home, label: 'Profile' },
+    { id: 'shop', icon: ShoppingBag, label: 'Магазин' },
+    { id: 'cart', icon: ShoppingCart, label: 'Корзина', badge: cartCount },
+    { id: 'profile', icon: Home, label: 'Профиль' },
   ];
 
   return (

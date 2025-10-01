@@ -20,13 +20,13 @@ export const products = [
         '/images/products/brown-hoodie-4.jpg',
       ]
     },
-    description: 'Premium oversized hoodie crafted from 100% organic cotton. Features a minimalist design with tonal VALUES embroidery. Perfect weight for year-round wear.',
+    description: 'Премиальное оверсайз худи из 100% органического хлопка. Минималистичный дизайн с вышивкой VALUES. Идеальный вес для круглогодичной носки.',
     details: [
-      '100% organic cotton',
-      'Oversized fit',
-      'Heavyweight 450gsm',
-      'Ribbed cuffs and hem',
-      'Made in Portugal'
+      '100% органический хлопок',
+      'Оверсайз крой',
+      'Плотность 450 г/м²',
+      'Рибаные манжеты и подол',
+      'Произведено в Португалии'
     ],
     category: 'hoodies',
     inStock: true,
@@ -52,13 +52,13 @@ export const products = [
         '/images/products/black-hoodie-4.jpg',
       ]
     },
-    description: 'Premium oversized hoodie in rich brown tone. Made from heavyweight cotton blend with a soft brushed interior. Modern streetwear essentials.',
+    description: 'Премиальное оверсайз худи в насыщенном коричневом оттенке. Изготовлено из плотного хлопкового материала с мягкой внутренней отделкой. Современная уличная мода.',
     details: [
-      '100% organic cotton',
-      'Oversized fit',
-      'Heavyweight 450gsm',
-      'Ribbed cuffs and hem',
-      'Made in Portugal'
+      '100% органический хлопок',
+      'Оверсайз крой',
+      'Плотность 450 г/м²',
+      'Рибаные манжеты и подол',
+      'Произведено в Португалии'
     ],
     category: 'hoodies',
     inStock: true,
