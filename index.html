@@ -26,9 +26,21 @@
       to { opacity: 1; }
     }
 
+    @keyframes slideDown {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(120px); opacity: 0; }
+    }
+
+    @keyframes slideUpNav {
+      from { transform: translateY(120px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
     .animate-slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
     .animate-scale-in { animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+    .animate-slide-down { animation: slideDown 0.3s cubic-bezier(0.4, 0, 1, 1) forwards; }
+    .animate-slide-up-nav { animation: slideUpNav 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
     .glass-effect {
       background: rgba(255, 255, 255, 0.72);
@@ -236,7 +248,7 @@
       );
     };
 
-    const NavigationBar = ({ currentPage, setCurrentPage, cartCount }) => {
+    const NavigationBar = ({ currentPage, setCurrentPage, cartCount, isHidden }) => {
       const icons = {
         shop: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>',
         cart: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>',
@@ -248,7 +260,7 @@
         { id: 'profile', label: 'Профиль' },
       ];
       return (
-        <div className="fixed bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-50 animate-slide-up px-4 w-full max-w-md">
+        <div className={`fixed bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-50 px-4 w-full max-w-md ${isHidden ? 'animate-slide-down' : 'animate-slide-up-nav'}`}>
           <div className="glass-effect rounded-full px-6 md:px-8 py-4 md:py-5 shadow-lg">
             <div className="flex items-center justify-around gap-8">
               {navItems.map((item) => {
@@ -479,8 +491,7 @@
       );
     };
 
-    const CartPage = ({ cart, onRemoveItem, onUpdateQuantity, onCheckout }) => {
-      const [showCheckout, setShowCheckout] = useState(false);
+    const CartPage = ({ cart, onRemoveItem, onUpdateQuantity, showCheckout, setShowCheckout }) => {
       const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       
       const handleCheckout = () => {
@@ -624,6 +635,7 @@
       const [currentPage, setCurrentPage] = useState('shop');
       const [selectedProduct, setSelectedProduct] = useState(null);
       const [isLoading, setIsLoading] = useState(true);
+      const [showCheckout, setShowCheckout] = useState(false);
       const { cart, addToCart, removeFromCart, updateQuantity, getCartCount } = useCart();
 
       useEffect(() => {
@@ -634,16 +646,19 @@
       const user = { id: '12345', name: 'Values User', username: 'values_user' };
       const handleAddToCart = (product, color, size = 'M') => { addToCart(product, color, size); };
 
+      // Скрываем навигацию если открыта модалка
+      const isNavHidden = selectedProduct !== null || showCheckout;
+
       return (
         <>
           <LoadingScreen isVisible={isLoading} />
           <div className="min-h-screen bg-white text-black">
             <main className="pb-28 md:pb-32">
               {currentPage === 'shop' && <ShopPage products={products} onAddToCart={handleAddToCart} onViewProduct={setSelectedProduct} />}
-              {currentPage === 'cart' && <CartPage cart={cart} onRemoveItem={removeFromCart} onUpdateQuantity={updateQuantity} />}
+              {currentPage === 'cart' && <CartPage cart={cart} onRemoveItem={removeFromCart} onUpdateQuantity={updateQuantity} showCheckout={showCheckout} setShowCheckout={setShowCheckout} />}
               {currentPage === 'profile' && <ProfilePage user={user} />}
               {selectedProduct && <ProductDetail product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={handleAddToCart} />}
-              <NavigationBar currentPage={currentPage} setCurrentPage={setCurrentPage} cartCount={getCartCount()} />
+              <NavigationBar currentPage={currentPage} setCurrentPage={setCurrentPage} cartCount={getCartCount()} isHidden={isNavHidden} />
             </main>
           </div>
         </>
