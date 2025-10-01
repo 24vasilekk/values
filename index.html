@@ -215,21 +215,21 @@
       const [hoveredColor, setHoveredColor] = useState(product.colors[0]);
       return (
         <div className="group">
-          <div className="relative overflow-hidden rounded-xl bg-gray-50 cursor-pointer transition-all duration-500 hover:scale-[1.01] hover:shadow-lg" onClick={() => onViewDetails(product)} style={{border: '0.5px solid rgba(0,0,0,0.04)'}}>
+          <div className="relative overflow-hidden rounded-lg md:rounded-xl bg-gray-50 cursor-pointer transition-all duration-500 hover:scale-[1.01] hover:shadow-lg" onClick={() => onViewDetails(product)} style={{border: '0.5px solid rgba(0,0,0,0.04)'}}>
             <div className="aspect-[3/4] overflow-hidden">
               <img src={product.images[hoveredColor][0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
             </div>
           </div>
-          <div className="mt-3 space-y-2">
-            <h3 className="text-black font-normal text-sm md:text-base tracking-tight" style={{letterSpacing: '-0.01em'}}>{product.name}</h3>
-            <p className="text-gray-600 text-sm font-normal">{(product.price / 100).toLocaleString('ru-RU')} ₽</p>
-            <div className="flex items-center gap-3">
-              <div className="flex gap-2">
+          <div className="mt-2 md:mt-3 space-y-1.5 md:space-y-2">
+            <h3 className="text-black font-normal text-xs md:text-sm lg:text-base tracking-tight leading-tight" style={{letterSpacing: '-0.01em'}}>{product.name}</h3>
+            <p className="text-gray-600 text-xs md:text-sm font-normal">{(product.price / 100).toLocaleString('ru-RU')} ₽</p>
+            <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+              <div className="flex gap-1.5 md:gap-2">
                 {product.colors.map((color) => (
-                  <button key={color} onMouseEnter={() => setHoveredColor(color)} onMouseLeave={() => setHoveredColor(product.colors[0])} className={`w-6 h-6 md:w-7 md:h-7 rounded-full transition-all duration-300 ${color === 'black' ? 'bg-black' : 'bg-amber-900'} ${hoveredColor === color ? 'ring-2 ring-black ring-offset-2 scale-110' : 'opacity-60 hover:opacity-100'}`} />
+                  <button key={color} onMouseEnter={() => setHoveredColor(color)} onMouseLeave={() => setHoveredColor(product.colors[0])} className={`w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 rounded-full transition-all duration-300 ${color === 'black' ? 'bg-black' : 'bg-amber-900'} ${hoveredColor === color ? 'ring-2 ring-black ring-offset-1 md:ring-offset-2 scale-110' : 'opacity-60 hover:opacity-100'}`} />
                 ))}
               </div>
-              <button onClick={(e) => { e.stopPropagation(); onAddToCart(product, hoveredColor); }} className="ml-auto bg-black text-white px-4 py-1.5 rounded-full text-xs font-medium apple-button">Добавить</button>
+              <button onClick={(e) => { e.stopPropagation(); onAddToCart(product, hoveredColor); }} className="ml-auto bg-black text-white px-3 md:px-4 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-medium apple-button whitespace-nowrap">Добавить</button>
             </div>
           </div>
         </div>
@@ -249,13 +249,13 @@
       ];
       return (
         <div className="fixed bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-50 animate-slide-up px-4 w-full max-w-md">
-          <div className="glass-effect rounded-full px-6 md:px-8 py-3 shadow-lg">
+          <div className="glass-effect rounded-full px-6 md:px-8 py-4 md:py-5 shadow-lg">
             <div className="flex items-center justify-around gap-8">
               {navItems.map((item) => {
                 const isActive = currentPage === item.id;
                 return (
                   <button key={item.id} onClick={() => setCurrentPage(item.id)} className={`relative transition-all duration-300 ${isActive ? 'scale-100' : 'scale-90 opacity-50 hover:opacity-80'}`}>
-                    <svg className={`w-5 h-5 md:w-6 md:h-6 ${isActive ? 'text-black' : 'text-gray-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: icons[item.id] }} />
+                    <svg className={`w-6 h-6 md:w-7 md:h-7 ${isActive ? 'text-black' : 'text-gray-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: icons[item.id] }} />
                     {item.badge > 0 && <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] w-4 h-4 md:w-[18px] md:h-[18px] rounded-full flex items-center justify-center font-medium animate-scale-in">{item.badge}</span>}
                   </button>
                 );
@@ -268,12 +268,13 @@
 
     const ShopPage = ({ products, onAddToCart, onViewProduct }) => (
       <div className="min-h-screen">
-        <div className="text-center pt-16 md:pt-24 pb-12 md:pb-16 animate-slide-up px-4">
-          <img src="/images/logo.png" alt="VALUES" className="h-10 md:h-12 w-auto object-contain mx-auto opacity-90" />
-          <p className="text-gray-500 text-xs md:text-sm mt-4 font-normal tracking-wide"></p>
+        <div className="text-center pt-16 md:pt-24 pb-8 md:pb-12 animate-slide-up px-4">
+          <img src="/images/logo.png" alt="VALUES" className="h-10 md:h-12 w-auto object-contain mx-auto opacity-90 mb-6 md:mb-8" />
+          <img src="/images/loading.gif" alt="VALUES Collection" className="w-40 h-40 md:w-56 md:h-56 object-contain mx-auto opacity-80 mb-4" />
+          <p className="text-gray-500 text-xs md:text-sm font-normal tracking-wide">ПРЕМИАЛЬНАЯ КОЛЛЕКЦИЯ</p>
         </div>
         <div className="max-w-6xl mx-auto px-4 md:px-8 pb-32">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 lg:gap-12">
             {products.map((product) => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onViewDetails={onViewProduct} />)}
           </div>
         </div>
