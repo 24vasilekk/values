@@ -29,3 +29,6 @@ yarn-error.log*
 
 # Railway
 .railway/
+
+# Lock files
+package-lock.json
