@@ -35,6 +35,7 @@ const AppContent = () => {
   const handleCheckout = () => {
     console.log('Proceeding to checkout...', cart);
     // Здесь будет логика оформления заказа
+    alert('Checkout functionality coming soon!');
   };
 
   return (

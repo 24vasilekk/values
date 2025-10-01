@@ -5,24 +5,24 @@ const CartSummary = ({ total, onCheckout }) => {
   const finalTotal = total + shipping;
 
   return (
-    <div className="glass-effect rounded-2xl p-8 animate-slide-up">
+    <div className="glass-effect rounded-xl md:rounded-2xl p-6 md:p-8 animate-slide-up sticky top-4">
       {/* Расчеты */}
-      <div className="space-y-4 mb-6">
-        <div className="flex justify-between text-white/60">
+      <div className="space-y-3 md:space-y-4 mb-6">
+        <div className="flex justify-between text-gray-600 text-sm md:text-base">
           <span>Subtotal</span>
           <span>{(total / 100).toLocaleString('ru-RU')} ₽</span>
         </div>
         
-        <div className="flex justify-between text-white/60">
+        <div className="flex justify-between text-gray-600 text-sm md:text-base">
           <span>Shipping</span>
-          <span className="text-green-400">Free</span>
+          <span className="text-green-600">Free</span>
         </div>
         
-        <div className="h-px bg-white/10" />
+        <div className="h-px bg-gray-200" />
         
         <div className="flex justify-between items-center">
-          <span className="text-white/80 text-lg">Total</span>
-          <span className="text-white text-3xl font-light">
+          <span className="text-black text-base md:text-lg">Total</span>
+          <span className="text-black text-2xl md:text-3xl font-light">
             {(finalTotal / 100).toLocaleString('ru-RU')} ₽
           </span>
         </div>
@@ -31,13 +31,13 @@ const CartSummary = ({ total, onCheckout }) => {
       {/* Кнопка оформления */}
       <button 
         onClick={onCheckout}
-        className="w-full bg-white text-black py-4 rounded-2xl text-lg font-medium hover:bg-white/90 transition-all hover:scale-[1.02] active:scale-95"
+        className="w-full bg-black text-white py-3 md:py-4 rounded-xl md:rounded-2xl text-base md:text-lg font-medium hover:bg-gray-800 transition-all hover:scale-[1.02] active:scale-95"
       >
         Proceed to Checkout
       </button>
 
       {/* Дополнительная информация */}
-      <p className="text-white/40 text-xs text-center mt-4">
+      <p className="text-gray-400 text-xs text-center mt-4">
         Secure checkout powered by Stripe
       </p>
     </div>
