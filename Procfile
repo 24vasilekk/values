@@ -1,1 +1,1 @@
-web: caddy run --config Caddyfile --adapter caddyfile
+web: python3 -m http.server $PORT
